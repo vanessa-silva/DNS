@@ -1,0 +1,8 @@
+[root@localhost network-scripts]# host router.lr-g11.pt. 192.168.80.2
+Using domain server:
+Name: 192.168.80.2
+Address: 192.168.80.2#53
+Aliases: 
+
+router.lr-g11.pt has address 192.168.80.1
+

@@ -1,0 +1,9 @@
+[root@localhost etc]# named-checkzone -D 0.16.172.in-addr.arpa /var/named/reverse/172.16.0.zone
+zone 0.16.172.in-addr.arpa/IN: loaded serial 2016051818
+0.16.172.in-addr.arpa.			      86400 IN SOA	dns.lr-g11.pt. miguelferreira108.google.com. 2016051818 10800 15 604800 10800
+0.16.172.in-addr.arpa.			      86400 IN NS	dns.lr-g11.pt.
+0.16.172.in-addr.arpa.			      86400 IN MX	10 mail.lr-g11.pt.
+1.0.16.172.in-addr.arpa.		      86400 IN PTR	router.lr-g11.pt.
+2.0.16.172.in-addr.arpa.		      86400 IN PTR	dns.lr-g11.pt.
+7.0.16.172.in-addr.arpa.		      86400 IN PTR	mail.lr-g11.pt.
+OK

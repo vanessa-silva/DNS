@@ -1,0 +1,16 @@
+$ORIGIN	0.0.10.in-addr.arpa.
+$TTL	86400
+@	1D	SOA dns.dept.lr-g11.pt.	miguelferreira108.google.com. (
+	2016051900
+	3h
+	15
+	1w
+	3h
+	)
+
+	NS dns.dept.lr-g11.pt.
+	MX 10 mail.lr-g11.pt.
+
+1 PTR router.dept.lr-g11.pt.
+2 PTR dns.dept.lr-g11.pt.
+7 PTR mail.lr-g11.pt.

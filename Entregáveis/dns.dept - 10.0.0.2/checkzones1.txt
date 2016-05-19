@@ -1,0 +1,10 @@
+[root@localhost etc]# named-checkzone -D dept.lr-g11.pt /var/named/master/dns.dept.lr-g11.pt.zone
+/var/named/master/dns.dept.lr-g11.pt.zone:16: ignoring out-of-zone data (mail.lr-g11.pt)
+zone dept.lr-g11.pt/IN: dept.lr-g11.pt/MX 'mail.lr-g11.pt' (out of zone) has no addresses records (A or AAAA)
+zone dept.lr-g11.pt/IN: loaded serial 2016051902
+dept.lr-g11.pt.				      86400 IN SOA	dns.dept.lr-g11.pt. miguelferreira108.google.com. 2016051902 10800 15 604800 10800
+dept.lr-g11.pt.				      86400 IN NS	dns.dept.lr-g11.pt.
+dept.lr-g11.pt.				      86400 IN MX	10 mail.lr-g11.pt.
+dns.dept.lr-g11.pt.			      86400 IN A	10.0.0.2
+router.dept.lr-g11.pt.			      86400 IN A	10.0.0.1
+OK

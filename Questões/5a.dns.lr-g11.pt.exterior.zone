@@ -1,0 +1,22 @@
+$ORIGIN	lr-g11.pt.
+$TTL	86400
+@	1D	SOA dns.lr-g11.pt.	miguelferreira108.google.com. (
+	2016051904
+	3h
+	15
+	1w
+	3h
+	)
+
+	NS dns.lr-g11.pt.
+	MX 10 mail.lr-g11.pt.
+
+
+dept NS dns.dept
+dns.dept A 10.0.0.2
+
+dns A 192.168.80.2
+mail A 192.168.80.7
+router A 192.168.80.1
+
+www.lr-g11.pt CNAME dns.lr-g11.pt.

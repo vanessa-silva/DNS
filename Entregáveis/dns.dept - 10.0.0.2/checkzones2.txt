@@ -1,0 +1,10 @@
+[root@localhost etc]# named-checkzone -D dept.lr-g11.pt /var/named/master/dns.dept.lr-g1[root@localhost etc]# named-checkzone -D 0.0.10.in-addr.arpa /var/named/reverse/10.0.0.zone 
+zone 0.0.10.in-addr.arpa/IN: 0.0.10.in-addr.arpa/MX 'mail.lr-g11.pt' (out of zone) has no addresses records (A or AAAA)
+zone 0.0.10.in-addr.arpa/IN: loaded serial 2016051902
+0.0.10.in-addr.arpa.			      86400 IN SOA	dns.dept.lr-g11.pt. miguelferreira108.google.com. 2016051902 10800 15 604800 10800
+0.0.10.in-addr.arpa.			      86400 IN NS	dns.dept.lr-g11.pt.
+0.0.10.in-addr.arpa.			      86400 IN MX	10 mail.lr-g11.pt.
+1.0.0.10.in-addr.arpa.			      86400 IN PTR	router.dept.lr-g11.pt.
+2.0.0.10.in-addr.arpa.			      86400 IN PTR	dns.dept.lr-g11.pt.
+7.0.0.10.in-addr.arpa.			      86400 IN PTR	mail.lr-g11.pt.
+OK
