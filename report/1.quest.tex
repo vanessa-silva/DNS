@@ -12,7 +12,7 @@ Explique o que se passou. (texRes)
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\textwidth, height=0.35\textheight]{2_cap.png}
+\includegraphics[width=1\textwidth, height=0.33\textheight]{2_cap.png}
 \label{fig:2-capturaWireshark}
 \caption{Captura \emph{wireshark} no \textsf{dns.dept.lr-gX.pt}.}
 \end{figure}
@@ -33,7 +33,13 @@ Explique o que se passou. (texRes)
 
 
 \paragraph{4.}
-Diga o que entende por glue record e qual a sua utilidade. Foi necessário usar um nesta montagem? Em caso afirmativo, em que máquina? (texRes)
+\emph{Glue record}, ou registo-cola, é a associação de um nome \emph{host} (servidor de nomes ou DNS) a um endereço IP.
+Este tipo de registo é necessário quando queremos definir servidores de nomes de um domínio para um nome \emph{host} que é um subdomínio desse domínio, (que leva a uma dependência cíclica).
+
+Por exemplo, no nosso caso, para resolver \textsf{dept.lr.g11.pt} é necessário consultar \textsf{dns.dept.lr-g11.pt} (servidor de nomes), mas para isso é necessário resolver \textsf{dns.dept.lr-g11.pt}, o que implica consultar \textsf{dns.dept.lr-g11.pt}, entrando assim numa \textbf{dependência cíclica}.
+Perante isto, na nossa montagem, foi necessário usar um \emph{glue record} na máquina \textsf{dns.lr-gX.pt}, de modo a evitar essa dependência cíclica.
+
+\emph{Glue records} só devem ser usados na situação descrita acima, onde o servidor DNS se encontra dentro do domínio delegado.
 
 
 \paragraph{5.}
@@ -156,7 +162,7 @@ router.lr-g11.pt has address 192.168.80.1
 \paragraph{6.}
 
 \subparagraph{a.}
-No ficheiro \textsf{named.conf}, como podemos ver abaixo, acrescentamos as seguintes zonas:
+Ao ficheiro \textsf{named.conf}, como podemos ver abaixo, acrescentamos as seguintes zonas:
 
 \begin{verbatim}
 zone "dept.lr-g11.pt" IN {
@@ -222,7 +228,7 @@ $TTL	86400
 
 \newpage
 \subparagraph{b.}
-Captura da transferência do domínio \textsf{dept.lr-gX.pt} do \textsf{master} para o \textsf{slave}:
+Na captura \emph{wireshark} apresentada abaixo, podemos detetar a transferência do domínio \textsf{dept.lr-gX.pt} do \textsf{master} para o \textsf{slave}, \textsf{AXFR} (\emph{Authority Transfer}):
 
 \begin{figure}[h]
 \centering
@@ -233,11 +239,24 @@ Captura da transferência do domínio \textsf{dept.lr-gX.pt} do \textsf{master} 
 
 
 \subparagraph{c.}
-Antes da transferência de domínio é feito um outro pedido para o registo SOA. Explique para que serve este registo e por que razão é pedido antes de fazer a transferência de domínio. (texRes)
+O registo SOA (\emph{Start Of Authority}), como o próprio nome indica, significa início de autoridade. Este é o registo mais importante dentro do DNS, é sempre o primeiro registo de qualquer zona, e sozinho consegue determinar grande parte das informações necessárias para a correta resolução de um domínio, tais como:
+\begin{itemize}
+\item nome da zona;
+\item servidor DNS principal (\emph{primary master}), servidor que é a autoridade para a referida zona;
+\item endereço de email do administrador da zona;
+\item número de série, que é um indicativo se houve ou não alterações na zona;
+\item período de refrescamento (transferência de domínio para os \emph{slaves});
+\item período para nova tentativa se falhar a transferência de domínio;
+\item período de expiração da zona, após o qual um \emph{slave} deixa de ser autoritário para esta zona (se não a conseguir refrescar);
+\item período para \emph{caching} negativo, da indicação de que um dado nome não existe nesta zona.
+\end{itemize}
+
+SOA da zona é pedido antes de fazer a transferência de domínio para comparar o número de série com o que tem atualmente, se este for o mesmo, significa que não houve alterações na zona, e se for diferente, significa que é necessário transferir novamente a zona (pedido AXFR (transferência completa) ou IXFR (transferência incremental)).
 
 
 \subparagraph{d.}
-Verifica alguma diferença entre o protocolo de transporte usado para a transferência de domínio e o normalmente usado para as outras perguntas DNS? Qual a razão para essa diferença? (texRes)
+Sim, o protocolo de transporte usado para a transferência de domínio é o \textbf{TCP}, enquanto que o que é normalmente usado para as outras perguntas DNS é o \textbf{UDP}, uma vez que normalmente os pedidos e respostas são curtos e cabem num único pacote, o que gerava um desperdício se usa-se TCP.
+Como as transferências de zona, entre \emph{master} e \emph{slave}, são normalmente um grande volume de informação, que precisa de fiabilidade, e as mensagens são precedidas por um número de 16 bits indicando o tamanho das mesmas (TCP não faz delineação de mensagens), é indispensável a utilização do TCP como protocolo de transporte.
 
 
 \subparagraph{e.}
@@ -245,14 +264,16 @@ Captura de pacotes na pseudo-interface \textsf{any} no dns.lr-gX.pt:
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=0.85\textwidth, height=0.25\textheight]{6e_cap.png}
+\includegraphics[width=1\textwidth, height=0.35\textheight]{6e_cap.png}
 \label{fig:2-capturaWireshark}
 \caption{Captura \emph{wireshark} no \textsf{dns.lr-gX.pt}.}
 \end{figure}
 
-\newpage
+
 \subparagraph{f.}
 A resposta que obteve na alínea anterior é autoritativa? Justifique. (texRes)
+Sim, a resposta obtida é autoritativa, como podemos ver na figura abaixo (\emph{Authoritative nameservers}).
+Também sabemos que os servidores \emph{master} e \emph{slave} são autoritativos para a zona.
 
 
 \paragraph{7.}
@@ -260,7 +281,8 @@ A resposta que obteve na alínea anterior é autoritativa? Justifique. (texRes)
 Conteúdo do ficheiro \textsf{named.ca}:
 
 \begin{verbatim}
-; <<>> DiG 9.9.2-P1-RedHat-9.9.2-6.P1.fc18 <<>> +bufsize=1200 +norec @a.root-servers.net
+; <<>> DiG 9.9.2-P1-RedHat-9.9.2-6.P1.fc18 <<>> +bufsize=1200 +norec
+ @a.root-servers.net
 ; (2 servers found)
 ;; global options: +cmd
 ;; Got answer:
@@ -318,3 +340,8 @@ m.root-servers.net.	3600000	IN	AAAA	2001:dc3::35
 \end{verbatim}
 
 Observe o conteúdo desse ficheiro e explique a sua função. (texRes)
+
+
+%O ficheiro básico named.ca contém registos NS que nomeiam os root servers, e registos A que fornecem os respectivos endereços dos root servers.
+%named.ca      Aponta para os root domain servers.
+%o ficheiro de cache (named.ca).
