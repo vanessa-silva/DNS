@@ -8,7 +8,12 @@ dept.lr-g11.pt mail is handled by 10 mail.lr-g11.pt.
 
 
 \paragraph{2.}
-Explique o que se passou. (texRes)
+Obtivemos uma mensagem ICMP destination host unreachable, referente ao
+query DNS de um root server (certamente pela não ligação à
+Internet). Na eventualidade de termos ligação à Internet na altura da
+execução do exercício não obteríamos uma query DNS bem sucedida pois a
+resolução partiria da root ``.'' e Top-Level-Domain ``.pt'' e como o domínio
+``lr-g11'' não está registado, a resolução do nome falharia.
 
 \begin{figure}[h]
 \centering
@@ -339,9 +344,14 @@ m.root-servers.net.	3600000	IN	AAAA	2001:dc3::35
 ;; MSG SIZE  rcvd: 699
 \end{verbatim}
 
-Observe o conteúdo desse ficheiro e explique a sua função. (texRes)
+O ficheiro básico named.ca contém registos NS que nomeiam os root
+servers, e registos A que fornecem os respectivos endereços dos root
+servers. Este ficheiro distingue a resolução de domínios ligados e não
+ligados à Internet: numa rede não ligada à Internet, cada servidor DNS
+tem entradas no named.ca designando um root server dentro da rede não
+ligada; numa rede ligada à Internet o named.ca terá de nomear os root
+servers da Internet (é possível obter o named.ca em
+\texttt{ftp.rs.internic.net}).
 
-
-%O ficheiro básico named.ca contém registos NS que nomeiam os root servers, e registos A que fornecem os respectivos endereços dos root servers.
 %named.ca      Aponta para os root domain servers.
 %o ficheiro de cache (named.ca).
