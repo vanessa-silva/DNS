@@ -8,12 +8,15 @@ dept.lr-g11.pt mail is handled by 10 mail.lr-g11.pt.
 
 
 \paragraph{2.}
-Obtivemos uma mensagem ICMP destination host unreachable, referente ao
-query DNS de um root server (certamente pela não ligação à
-Internet). Na eventualidade de termos ligação à Internet na altura da
-execução do exercício não obteríamos uma query DNS bem sucedida pois a
-resolução partiria da root ``.'' e Top-Level-Domain ``.pt'' e como o domínio
-``lr-g11'' não está registado, a resolução do nome falharia.
+%Alterar resposta para nova versão
+Não obtivemos uma \emph{query} DNS bem sucedida.
+A resolução partiu da \texstsf{root} \textsf{``.''} e \emph{Top-Level-Domain} \textsf{``.pt''} e como o domínio \textsf{``lr-g11''} não está registado,
+a resolução de nome falhou.
+
+\begin{verbatim}
+[root@Labs5610 ar]# host -t mx lr-g11.pt
+Host lr-g11.pt not found: 3(NXDOMAIN)
+\end{verbatim} 
 
 \begin{figure}[h]
 \centering
@@ -23,18 +26,75 @@ resolução partiria da root ``.'' e Top-Level-Domain ``.pt'' e como o domínio
 \end{figure}
 
 
-%\paragraph{3.}
+\paragraph{3.}
 
-%\subparagraph{a.}
+\begin{verbatim}
+[root@Labs5610 ar]# dig www.jn.pt
+
+; <<>> DiG 9.10.3-P2-RedHat-9.10.3-7.P2.fc23 <<>> www.jn.pt
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 34829
+;; flags: qr rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 4, ADDITIONAL: 5
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;www.jn.pt.			IN	A
+
+;; ANSWER SECTION:
+www.jn.pt.		300	IN	A	80.251.169.144
+www.jn.pt.		300	IN	A	80.251.169.145
+www.jn.pt.		300	IN	A	80.251.169.146
+www.jn.pt.		300	IN	A	80.251.169.147
+
+;; AUTHORITY SECTION:
+jn.pt.			7200	IN	NS	dns3.jn.pt.
+jn.pt.			7200	IN	NS	dns2.jn.pt.
+jn.pt.			7200	IN	NS	dns1.jn.pt.
+jn.pt.			7200	IN	NS	dns.jn.pt.
+
+;; ADDITIONAL SECTION:
+dns.jn.pt.		7200	IN	A	194.65.90.97
+dns1.jn.pt.		7200	IN	A	80.251.161.203
+dns2.jn.pt.		7200	IN	A	194.65.90.101
+dns3.jn.pt.		7200	IN	A	83.240.201.246
+
+;; Query time: 339 msec
+;; SERVER: 10.0.0.2#53(10.0.0.2)
+;; WHEN: Wed May 25 10:45:21 WEST 2016
+;; MSG SIZE  rcvd: 241
+\end{verbatim}
+
+\subparagraph{a.}
+Diga qual foi o caminho seguido pelo(s) pedido(s) do registo A e respectiva(s) resposta(s). (texRes)
+O \textsf{term1} pede ao \textsf{dns.dept.lr-gX.pt} para resolver o nome www.jn.pt, este por sua vez pede ao \textsf{193.0.14.129} e responde 
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth, height=0.38\textheight]{3a_cap.png}
+\label{fig:2-capturaWireshark}
+\caption{Captura \emph{wireshark} do(s) pedido(s) do registo A no \textsf{dns.dept.lr-gX.pt}.}
+\end{figure}
 
 
-%\subparagraph{b.}
+\subparagraph{b.}
+Indique se a resposta dada ao terminal é autoritativa. (texRes)
+
+\begin{figure}[h]
+\centering
+\includegraphics[width=1\textwidth, height=0.38\textheight]{3b_cap.png}
+\label{fig:2-capturaWireshark}
+\caption{Captura \emph{wireshark} da resposta dada ao terminal no \textsf{dns.dept.lr-gX.pt}.}
+\end{figure}
 
 
-%\subparagraph{c.}
+\subparagraph{c.}
+Diga se a resposta obtida pelo dns.dept.lr-gX.pt é autoritativa e justifique. (texRes)
 
 
-%\subparagraph{d.}
+\subparagraph{d.}
+Note que existe mais do que um endereço para este nome e que a ordem dos endereços é round-robin. Que vantagens se podem obter destes factos? (texRes)
 %O round robin é um mecanismo de balanceamento local utilizado pelos servidores de DNS para partilhar e distribuir cargas de recursos na rede.
 
 
