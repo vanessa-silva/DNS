@@ -10,7 +10,7 @@ dept.lr-g11.pt mail is handled by 10 mail.lr-g11.pt.
 \paragraph{2.}
 %Alterar resposta para nova versão
 Não obtivemos uma \emph{query} DNS bem sucedida.
-A resolução partiu da \texstsf{root} \textsf{``.''} e \emph{Top-Level-Domain} \textsf{``.pt''} e como o domínio \textsf{``lr-g11''} não está registado,
+A resolução partiu da \textsf{root} \textsf{``.''} e \emph{Top-Level-Domain} \textsf{``.pt''} e como o domínio \textsf{``lr-g11''} não está registado,
 a resolução de nome falhou.
 
 \begin{verbatim}
@@ -67,36 +67,56 @@ dns3.jn.pt.		7200	IN	A	83.240.201.246
 \end{verbatim}
 
 \subparagraph{a.}
-Diga qual foi o caminho seguido pelo(s) pedido(s) do registo A e respectiva(s) resposta(s). (texRes)
-O \textsf{term1} pede ao \textsf{dns.dept.lr-gX.pt} para resolver o nome www.jn.pt, este por sua vez pede ao \textsf{193.0.14.129} e responde 
+O \textsf{term1} pede ao \textsf{dns.dept.lr-g11.pt} (servidor de nomes local) 
+para resolver o nome \textsf{www.jn.pt}, este verifica que o nome não faz
+parte do seu domínio e por isso, interroga o servidor de nomes da raiz 
+(\textsf{193.0.14.129}), este devolvo ao servidor de nomes local uma 
+referência para o servidor de nomes do subdomínio \textsf{\textit{pt}}. 
+O servidor de nomes local interroga o o servidor de nomes de \textsf{\textit{pt}}
+(\textsf{194.0.25.23}) sobre o endereço IP de \textsf{www.jn.pt} e obtém assim, 
+uma referência para o servidor do nomes \textsf{\textit{jn.pt}} que devolve
+ao servidor de nomes local. Este interroga, finalmente o servidor de 
+\textsf{\textit{jn.pt}} (\textsf{194.65.90.97}) que tem condições de resolver
+o endereço IP pedido. Termina então o processo de resolução e o 
+\textsf{dns.dept.lr-g11.pt} devolve ao \textsf{term1} o endereço IP correspondente
+ao nome solicitado.
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\textwidth, height=0.38\textheight]{3a_cap.png}
+\includegraphics[width=1\textwidth, height=0.35\textheight]{3a_cap.png}
 \label{fig:2-capturaWireshark}
-\caption{Captura \emph{wireshark} do(s) pedido(s) do registo A no \textsf{dns.dept.lr-gX.pt}.}
+\caption{Captura \emph{wireshark} do(s) pedido(s) do registo A no \textsf{dns.dept.lr-g11.pt}.}
 \end{figure}
 
 
 \subparagraph{b.}
-Indique se a resposta dada ao terminal é autoritativa. (texRes)
+Sim, a resposta dada ao terminal 1 é autoritativa, como podemos ver pelos campos marcados na figura abaixo \textsf{Autority RRs: 4}:
 
 \begin{figure}[h]
 \centering
-\includegraphics[width=1\textwidth, height=0.38\textheight]{3b_cap.png}
+\includegraphics[width=1\textwidth, height=0.35\textheight]{3b_cap.png}
 \label{fig:2-capturaWireshark}
 \caption{Captura \emph{wireshark} da resposta dada ao terminal no \textsf{dns.dept.lr-gX.pt}.}
 \end{figure}
 
 
-\subparagraph{c.}
-Diga se a resposta obtida pelo dns.dept.lr-gX.pt é autoritativa e justifique. (texRes)
+\subparagraph{c.} \textsf{\textit{jn.pt}}	
+Não, a resposta obtida pelo \textsf{dns.dept.lr-gX.pt} não é autoritativa. 
 
 
 \subparagraph{d.}
-Note que existe mais do que um endereço para este nome e que a ordem dos endereços é round-robin. Que vantagens se podem obter destes factos? (texRes)
-%O round robin é um mecanismo de balanceamento local utilizado pelos servidores de DNS para partilhar e distribuir cargas de recursos na rede.
+Na resposta obtida a esta pergunta é nos fornecido mais do que um endereço para 
+este nome, na qual a ordem dos endereços é \emph{round-robin}.
 
+\emph{Round robin} é um mecanismo de equilíbrio local de carga (\emph{ load balancing}),
+usado pelos servidores DNS  para compartilhar e distribuir cargas (pedidos de resolução 
+de nomes) entre dois ou mais servidores da rede, e é esta a principal vantagem do uso 
+deste mecanismo.
+
+Usando o \emph{round robin}, a um único nome DNS são associados mais do que um 
+endereços IP. À medida que as requisições vão chegando, o servidor DNS responde cada 
+consulta com um dos endereços IP e depois faz uma \textbf{reordenação} da lista de endereços, para que na próxima requisição, um endereço IP diferente seja o primeiro 
+da lista. Isto resulta numa distribuição igual de carga entre os diferentes servidores.
 
 
 \paragraph{4.}
@@ -108,7 +128,7 @@ Perante isto, na nossa montagem, foi necessário usar um \emph{glue record} na m
 
 \emph{Glue records} só devem ser usados na situação descrita acima, onde o servidor DNS se encontra dentro do domínio delegado.
 
-
+\newpage
 \paragraph{5.}
 
 \subparagraph{a.}
@@ -293,7 +313,7 @@ $TTL	86400
 7 PTR mail.lr-g11.pt.
 \end{verbatim}
 
-\newpage
+
 \subparagraph{b.}
 Na captura \emph{wireshark} apresentada abaixo, podemos detetar a transferência do domínio \textsf{dept.lr-gX.pt} do \textsf{master} para o \textsf{slave}, \textsf{AXFR} (\emph{Authority Transfer}):
 
