@@ -1,0 +1,37 @@
+[root@Labs5610 ar]# dig www.jn.pt
+
+; <<>> DiG 9.10.3-P2-RedHat-9.10.3-7.P2.fc23 <<>> www.jn.pt
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 34829
+;; flags: qr rd ra; QUERY: 1, ANSWER: 4, AUTHORITY: 4, ADDITIONAL: 5
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 4096
+;; QUESTION SECTION:
+;www.jn.pt.			IN	A
+
+;; ANSWER SECTION:
+www.jn.pt.		300	IN	A	80.251.169.144
+www.jn.pt.		300	IN	A	80.251.169.145
+www.jn.pt.		300	IN	A	80.251.169.146
+www.jn.pt.		300	IN	A	80.251.169.147
+
+;; AUTHORITY SECTION:
+jn.pt.			7200	IN	NS	dns3.jn.pt.
+jn.pt.			7200	IN	NS	dns2.jn.pt.
+jn.pt.			7200	IN	NS	dns1.jn.pt.
+jn.pt.			7200	IN	NS	dns.jn.pt.
+
+;; ADDITIONAL SECTION:
+dns.jn.pt.		7200	IN	A	194.65.90.97
+dns1.jn.pt.		7200	IN	A	80.251.161.203
+dns2.jn.pt.		7200	IN	A	194.65.90.101
+dns3.jn.pt.		7200	IN	A	83.240.201.246
+
+;; Query time: 339 msec
+;; SERVER: 10.0.0.2#53(10.0.0.2)
+;; WHEN: Wed May 25 10:45:21 WEST 2016
+;; MSG SIZE  rcvd: 241
+
+[root@Labs5610 ar]#

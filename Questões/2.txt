@@ -1,0 +1,3 @@
+[root@Labs5610 ar]# host -t mx lr-g11.pt
+Host lr-g11.pt not found: 3(NXDOMAIN)
+[root@Labs5610 ar]# 
